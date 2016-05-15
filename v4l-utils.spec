@@ -4,7 +4,7 @@
 #
 Name     : v4l-utils
 Version  : 1.10.0
-Release  : 1
+Release  : 2
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.10.0.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.10.0.tar.bz2
 Summary  : Media controller library.
@@ -15,6 +15,8 @@ Requires: v4l-utils-config
 Requires: v4l-utils-lib
 Requires: v4l-utils-locales
 Requires: v4l-utils-doc
+BuildRequires : doxygen
+BuildRequires : graphviz
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
