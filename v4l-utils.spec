@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.12.3
-Release  : 4
+Release  : 5
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2
 Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2.asc
