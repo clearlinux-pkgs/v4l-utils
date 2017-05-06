@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.12.3
-Release  : 5
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.3.tar.bz2.asc
+Version  : 1.12.4
+Release  : 6
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.4.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.4.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.4.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -86,11 +86,14 @@ locales components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.12.3
+%setup -q -n v4l-utils-1.12.4
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1487765543
+export SOURCE_DATE_EPOCH=1494101947
 %configure --disable-static --without-jpeg
 make V=1  %{?_smp_mflags}
 
@@ -98,11 +101,11 @@ make V=1  %{?_smp_mflags}
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1487765543
+export SOURCE_DATE_EPOCH=1494101947
 rm -rf %{buildroot}
 %make_install
 %find_lang libdvbv5
