@@ -1,0 +1,16 @@
+Configure miss: x86_64-generic-linux-gnu-doxygen
+Configure miss: x86_64-generic-linux-gnu-perl
+Configure miss: x86_64-generic-linux-gnu-dot
+Configure miss: x86_64-generic-linux-gnu-latex
+Configure miss: latex
+Configure miss: x86_64-generic-linux-gnu-makeindex
+Configure miss: x86_64-generic-linux-gnu-dvips
+Configure miss: dvips
+Configure miss: x86_64-generic-linux-gnu-egrep
+Configure miss: x86_64-generic-linux-gnu-pdflatex
+Configure miss: x86_64-generic-linux-gnu-makeindex
+Configure miss: ioctl with POSIX signature
+Configure miss: QT5
+Configure miss: QT
+Configure miss: whether gcc is Clang
+Configure miss: whether more special flags are required for pthreads

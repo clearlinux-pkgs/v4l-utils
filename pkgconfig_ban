@@ -4,3 +4,6 @@ Qt5Core
 Qt5OpenGL
 QtCore
 QtOpenGL
+QtGui
+Qt5Widgets
+Qt5Gui
