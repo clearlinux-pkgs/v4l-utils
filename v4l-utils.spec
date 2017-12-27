@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.12.6
-Release  : 8
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.6.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.6.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.12.6.tar.bz2.asc
+Version  : 1.14.0
+Release  : 9
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.0.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.0.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -20,10 +20,13 @@ Requires: v4l-utils-locales
 Requires: v4l-utils-doc
 BuildRequires : doxygen
 BuildRequires : graphviz
+BuildRequires : libjpeg-turbo-dev
+BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
 BuildRequires : pkgconfig(libudev)
+BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
@@ -85,15 +88,15 @@ locales components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.12.6
+%setup -q -n v4l-utils-1.14.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1512762588
-%configure --disable-static --without-jpeg
+export SOURCE_DATE_EPOCH=1514392093
+%configure --disable-static
 make  %{?_smp_mflags}
 
 %check
@@ -104,7 +107,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1512762588
+export SOURCE_DATE_EPOCH=1514392093
 rm -rf %{buildroot}
 %make_install
 %find_lang libdvbv5
@@ -112,7 +115,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/udev/rc_keymaps/a800
 /usr/lib/udev/rc_keymaps/adstech_dvb_t_pci
 /usr/lib/udev/rc_keymaps/af9005
 /usr/lib/udev/rc_keymaps/alink_dtu_m
@@ -120,6 +122,7 @@ rm -rf %{buildroot}
 /usr/lib/udev/rc_keymaps/allwinner_i12_a20_tv_box
 /usr/lib/udev/rc_keymaps/anysee
 /usr/lib/udev/rc_keymaps/apac_viewcomp
+/usr/lib/udev/rc_keymaps/astrometa_t2hybrid
 /usr/lib/udev/rc_keymaps/asus_pc39
 /usr/lib/udev/rc_keymaps/asus_ps3_100
 /usr/lib/udev/rc_keymaps/ati_tv_wonder_hd_600
@@ -132,6 +135,7 @@ rm -rf %{buildroot}
 /usr/lib/udev/rc_keymaps/avermedia_m733a_rm_k6
 /usr/lib/udev/rc_keymaps/avermedia_rm_ks
 /usr/lib/udev/rc_keymaps/avertv_303
+/usr/lib/udev/rc_keymaps/az6027
 /usr/lib/udev/rc_keymaps/azurewave_ad_tu700
 /usr/lib/udev/rc_keymaps/behold
 /usr/lib/udev/rc_keymaps/behold_columbus
@@ -165,10 +169,13 @@ rm -rf %{buildroot}
 /usr/lib/udev/rc_keymaps/flyvideo
 /usr/lib/udev/rc_keymaps/fusionhdtv_mce
 /usr/lib/udev/rc_keymaps/gadmei_rm008z
+/usr/lib/udev/rc_keymaps/geekbox
 /usr/lib/udev/rc_keymaps/genius_tvgo_a11mce
 /usr/lib/udev/rc_keymaps/gotview7135
 /usr/lib/udev/rc_keymaps/haupp
 /usr/lib/udev/rc_keymaps/hauppauge
+/usr/lib/udev/rc_keymaps/hisi_poplar
+/usr/lib/udev/rc_keymaps/hisi_tv_demo
 /usr/lib/udev/rc_keymaps/imon_mce
 /usr/lib/udev/rc_keymaps/imon_pad
 /usr/lib/udev/rc_keymaps/iodata_bctv7e
@@ -213,6 +220,7 @@ rm -rf %{buildroot}
 /usr/lib/udev/rc_keymaps/snapstream_firefly
 /usr/lib/udev/rc_keymaps/streamzap
 /usr/lib/udev/rc_keymaps/su3000
+/usr/lib/udev/rc_keymaps/tango
 /usr/lib/udev/rc_keymaps/tbs_nec
 /usr/lib/udev/rc_keymaps/technisat_ts35
 /usr/lib/udev/rc_keymaps/technisat_usb2
@@ -234,10 +242,10 @@ rm -rf %{buildroot}
 /usr/lib/udev/rc_keymaps/videomate_s350
 /usr/lib/udev/rc_keymaps/videomate_tv_pvr
 /usr/lib/udev/rc_keymaps/vp702x
-/usr/lib/udev/rc_keymaps/vp7045
 /usr/lib/udev/rc_keymaps/winfast
 /usr/lib/udev/rc_keymaps/winfast_usbii_deluxe
 /usr/lib/udev/rc_keymaps/wobo_i5
+/usr/lib/udev/rc_keymaps/zx_irdec
 /usr/lib64/libv4l/ov511-decomp
 /usr/lib64/libv4l/ov518-decomp
 
