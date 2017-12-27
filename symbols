@@ -92,6 +92,7 @@ libdvbv5.so.0:dvb_dev_read
 libdvbv5.so.0:dvb_dev_remote_init
 libdvbv5.so.0:dvb_dev_scan
 libdvbv5.so.0:dvb_dev_seek_by_adapter
+libdvbv5.so.0:dvb_dev_seek_by_sysname
 libdvbv5.so.0:dvb_dev_set_bufsize
 libdvbv5.so.0:dvb_dev_set_log
 libdvbv5.so.0:dvb_dev_set_logpriv
@@ -143,6 +144,7 @@ libdvbv5.so.0:dvb_local_fe_set_parms
 libdvbv5.so.0:dvb_local_fe_set_sys
 libdvbv5.so.0:dvb_local_get_dev_info
 libdvbv5.so.0:dvb_local_seek_by_adapter
+libdvbv5.so.0:dvb_local_seek_by_sysname
 libdvbv5.so.0:dvb_mpeg_es_pic_start_init
 libdvbv5.so.0:dvb_mpeg_es_pic_start_print
 libdvbv5.so.0:dvb_mpeg_es_seq_start_init
@@ -171,6 +173,7 @@ libdvbv5.so.0:dvb_remote_fe_set_parms
 libdvbv5.so.0:dvb_remote_fe_set_sys
 libdvbv5.so.0:dvb_remote_get_dev_info
 libdvbv5.so.0:dvb_remote_seek_by_adapter
+libdvbv5.so.0:dvb_remote_seek_by_sysname
 libdvbv5.so.0:dvb_retrieve_entry_prop
 libdvbv5.so.0:dvb_sat_get_lnb
 libdvbv5.so.0:dvb_sat_get_lnb_name
