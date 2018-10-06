@@ -1,3 +1,5 @@
 Configure miss: ioctl with POSIX signature
-Configure miss: QT5
-Configure miss: QT
+Configure miss: whether sys/types.h defines makedev
+Configure miss: moc-qt5
+Configure miss: uic-qt5
+Configure miss: rcc-qt5

@@ -5,26 +5,32 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.14.2
-Release  : 13
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.2.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.2.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.14.2.tar.bz2.asc
+Version  : 1.16.0
+Release  : 14
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin
 Requires: v4l-utils-config
 Requires: v4l-utils-lib
+Requires: v4l-utils-data
+Requires: v4l-utils-license
 Requires: v4l-utils-locales
-Requires: v4l-utils-doc
+Requires: v4l-utils-man
+BuildRequires : buildreq-kde
+BuildRequires : buildreq-qmake
 BuildRequires : doxygen
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
+BuildRequires : llvm-dev
 BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
+BuildRequires : pkgconfig(libelf)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
@@ -38,7 +44,10 @@ capture devices, radio devices, remote controllers).
 %package bin
 Summary: bin components for the v4l-utils package.
 Group: Binaries
-Requires: v4l-utils-config
+Requires: v4l-utils-data = %{version}-%{release}
+Requires: v4l-utils-config = %{version}-%{release}
+Requires: v4l-utils-license = %{version}-%{release}
+Requires: v4l-utils-man = %{version}-%{release}
 
 %description bin
 bin components for the v4l-utils package.
@@ -52,31 +61,42 @@ Group: Default
 config components for the v4l-utils package.
 
 
+%package data
+Summary: data components for the v4l-utils package.
+Group: Data
+
+%description data
+data components for the v4l-utils package.
+
+
 %package dev
 Summary: dev components for the v4l-utils package.
 Group: Development
-Requires: v4l-utils-lib
-Requires: v4l-utils-bin
-Provides: v4l-utils-devel
+Requires: v4l-utils-lib = %{version}-%{release}
+Requires: v4l-utils-bin = %{version}-%{release}
+Requires: v4l-utils-data = %{version}-%{release}
+Provides: v4l-utils-devel = %{version}-%{release}
 
 %description dev
 dev components for the v4l-utils package.
 
 
-%package doc
-Summary: doc components for the v4l-utils package.
-Group: Documentation
-
-%description doc
-doc components for the v4l-utils package.
-
-
 %package lib
 Summary: lib components for the v4l-utils package.
 Group: Libraries
+Requires: v4l-utils-data = %{version}-%{release}
+Requires: v4l-utils-license = %{version}-%{release}
 
 %description lib
 lib components for the v4l-utils package.
+
+
+%package license
+Summary: license components for the v4l-utils package.
+Group: Default
+
+%description license
+license components for the v4l-utils package.
 
 
 %package locales
@@ -87,15 +107,23 @@ Group: Default
 locales components for the v4l-utils package.
 
 
+%package man
+Summary: man components for the v4l-utils package.
+Group: Default
+
+%description man
+man components for the v4l-utils package.
+
+
 %prep
-%setup -q -n v4l-utils-1.14.2
+%setup -q -n v4l-utils-1.16.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1518269403
+export SOURCE_DATE_EPOCH=1538839433
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -107,145 +135,152 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1518269403
+export SOURCE_DATE_EPOCH=1538839433
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/v4l-utils
+cp COPYING %{buildroot}/usr/share/doc/v4l-utils/COPYING
+cp COPYING.libdvbv5 %{buildroot}/usr/share/doc/v4l-utils/COPYING.libdvbv5
+cp COPYING.libv4l %{buildroot}/usr/share/doc/v4l-utils/COPYING.libv4l
 %make_install
 %find_lang libdvbv5
 %find_lang v4l-utils
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/udev/rc_keymaps/adstech_dvb_t_pci
-/usr/lib/udev/rc_keymaps/af9005
-/usr/lib/udev/rc_keymaps/alink_dtu_m
-/usr/lib/udev/rc_keymaps/allwinner_ba10_tv_box
-/usr/lib/udev/rc_keymaps/allwinner_i12_a20_tv_box
-/usr/lib/udev/rc_keymaps/anysee
-/usr/lib/udev/rc_keymaps/apac_viewcomp
-/usr/lib/udev/rc_keymaps/astrometa_t2hybrid
-/usr/lib/udev/rc_keymaps/asus_pc39
-/usr/lib/udev/rc_keymaps/asus_ps3_100
-/usr/lib/udev/rc_keymaps/ati_tv_wonder_hd_600
-/usr/lib/udev/rc_keymaps/ati_x10
-/usr/lib/udev/rc_keymaps/avermedia
-/usr/lib/udev/rc_keymaps/avermedia_a16d
-/usr/lib/udev/rc_keymaps/avermedia_cardbus
-/usr/lib/udev/rc_keymaps/avermedia_dvbt
-/usr/lib/udev/rc_keymaps/avermedia_m135a
-/usr/lib/udev/rc_keymaps/avermedia_m733a_rm_k6
-/usr/lib/udev/rc_keymaps/avermedia_rm_ks
-/usr/lib/udev/rc_keymaps/avertv_303
-/usr/lib/udev/rc_keymaps/az6027
-/usr/lib/udev/rc_keymaps/azurewave_ad_tu700
-/usr/lib/udev/rc_keymaps/behold
-/usr/lib/udev/rc_keymaps/behold_columbus
-/usr/lib/udev/rc_keymaps/budget_ci_old
-/usr/lib/udev/rc_keymaps/cec
-/usr/lib/udev/rc_keymaps/cinergy
-/usr/lib/udev/rc_keymaps/cinergy_1400
-/usr/lib/udev/rc_keymaps/cinergyt2
-/usr/lib/udev/rc_keymaps/d680_dmb
-/usr/lib/udev/rc_keymaps/delock_61959
-/usr/lib/udev/rc_keymaps/dib0700_nec
-/usr/lib/udev/rc_keymaps/dib0700_rc5
-/usr/lib/udev/rc_keymaps/dibusb
-/usr/lib/udev/rc_keymaps/digitalnow_tinytwin
-/usr/lib/udev/rc_keymaps/digittrade
-/usr/lib/udev/rc_keymaps/digitv
-/usr/lib/udev/rc_keymaps/dm1105_nec
-/usr/lib/udev/rc_keymaps/dntv_live_dvb_t
-/usr/lib/udev/rc_keymaps/dntv_live_dvbt_pro
-/usr/lib/udev/rc_keymaps/dtt200u
-/usr/lib/udev/rc_keymaps/dvbsky
-/usr/lib/udev/rc_keymaps/dvico_mce
-/usr/lib/udev/rc_keymaps/dvico_portable
-/usr/lib/udev/rc_keymaps/em_terratec
-/usr/lib/udev/rc_keymaps/encore_enltv
-/usr/lib/udev/rc_keymaps/encore_enltv2
-/usr/lib/udev/rc_keymaps/encore_enltv_fm53
-/usr/lib/udev/rc_keymaps/evga_indtube
-/usr/lib/udev/rc_keymaps/eztv
-/usr/lib/udev/rc_keymaps/flydvb
-/usr/lib/udev/rc_keymaps/flyvideo
-/usr/lib/udev/rc_keymaps/fusionhdtv_mce
-/usr/lib/udev/rc_keymaps/gadmei_rm008z
-/usr/lib/udev/rc_keymaps/geekbox
-/usr/lib/udev/rc_keymaps/genius_tvgo_a11mce
-/usr/lib/udev/rc_keymaps/gotview7135
-/usr/lib/udev/rc_keymaps/haupp
-/usr/lib/udev/rc_keymaps/hauppauge
-/usr/lib/udev/rc_keymaps/hisi_poplar
-/usr/lib/udev/rc_keymaps/hisi_tv_demo
-/usr/lib/udev/rc_keymaps/imon_mce
-/usr/lib/udev/rc_keymaps/imon_pad
-/usr/lib/udev/rc_keymaps/iodata_bctv7e
-/usr/lib/udev/rc_keymaps/it913x_v1
-/usr/lib/udev/rc_keymaps/it913x_v2
-/usr/lib/udev/rc_keymaps/kaiomy
-/usr/lib/udev/rc_keymaps/kworld_315u
-/usr/lib/udev/rc_keymaps/kworld_pc150u
-/usr/lib/udev/rc_keymaps/kworld_plus_tv_analog
-/usr/lib/udev/rc_keymaps/leadtek_y04g0051
-/usr/lib/udev/rc_keymaps/lme2510
-/usr/lib/udev/rc_keymaps/manli
-/usr/lib/udev/rc_keymaps/medion_x10
-/usr/lib/udev/rc_keymaps/medion_x10_digitainer
-/usr/lib/udev/rc_keymaps/medion_x10_or2x
-/usr/lib/udev/rc_keymaps/megasky
-/usr/lib/udev/rc_keymaps/msi_digivox_ii
-/usr/lib/udev/rc_keymaps/msi_digivox_iii
-/usr/lib/udev/rc_keymaps/msi_tvanywhere
-/usr/lib/udev/rc_keymaps/msi_tvanywhere_plus
-/usr/lib/udev/rc_keymaps/nebula
-/usr/lib/udev/rc_keymaps/nec_terratec_cinergy_xs
-/usr/lib/udev/rc_keymaps/norwood
-/usr/lib/udev/rc_keymaps/npgtech
-/usr/lib/udev/rc_keymaps/opera1
-/usr/lib/udev/rc_keymaps/pctv_sedna
-/usr/lib/udev/rc_keymaps/pinnacle310e
-/usr/lib/udev/rc_keymaps/pinnacle_color
-/usr/lib/udev/rc_keymaps/pinnacle_grey
-/usr/lib/udev/rc_keymaps/pinnacle_pctv_hd
-/usr/lib/udev/rc_keymaps/pixelview
-/usr/lib/udev/rc_keymaps/pixelview_002t
-/usr/lib/udev/rc_keymaps/pixelview_mk12
-/usr/lib/udev/rc_keymaps/pixelview_new
-/usr/lib/udev/rc_keymaps/powercolor_real_angel
-/usr/lib/udev/rc_keymaps/proteus_2309
-/usr/lib/udev/rc_keymaps/purpletv
-/usr/lib/udev/rc_keymaps/pv951
-/usr/lib/udev/rc_keymaps/rc6_mce
-/usr/lib/udev/rc_keymaps/real_audio_220_32_keys
-/usr/lib/udev/rc_keymaps/reddo
-/usr/lib/udev/rc_keymaps/snapstream_firefly
-/usr/lib/udev/rc_keymaps/streamzap
-/usr/lib/udev/rc_keymaps/su3000
-/usr/lib/udev/rc_keymaps/tango
-/usr/lib/udev/rc_keymaps/tbs_nec
-/usr/lib/udev/rc_keymaps/technisat_ts35
-/usr/lib/udev/rc_keymaps/technisat_usb2
-/usr/lib/udev/rc_keymaps/terratec_cinergy_c_pci
-/usr/lib/udev/rc_keymaps/terratec_cinergy_s2_hd
-/usr/lib/udev/rc_keymaps/terratec_cinergy_xs
-/usr/lib/udev/rc_keymaps/terratec_slim
-/usr/lib/udev/rc_keymaps/terratec_slim_2
-/usr/lib/udev/rc_keymaps/tevii_nec
-/usr/lib/udev/rc_keymaps/tivo
-/usr/lib/udev/rc_keymaps/total_media_in_hand
-/usr/lib/udev/rc_keymaps/total_media_in_hand_02
-/usr/lib/udev/rc_keymaps/trekstor
-/usr/lib/udev/rc_keymaps/tt_1500
-/usr/lib/udev/rc_keymaps/tvwalkertwin
-/usr/lib/udev/rc_keymaps/twinhan_dtv_cab_ci
-/usr/lib/udev/rc_keymaps/twinhan_vp1027_dvbs
-/usr/lib/udev/rc_keymaps/videomate_k100
-/usr/lib/udev/rc_keymaps/videomate_s350
-/usr/lib/udev/rc_keymaps/videomate_tv_pvr
-/usr/lib/udev/rc_keymaps/vp702x
-/usr/lib/udev/rc_keymaps/winfast
-/usr/lib/udev/rc_keymaps/winfast_usbii_deluxe
-/usr/lib/udev/rc_keymaps/wobo_i5
-/usr/lib/udev/rc_keymaps/zx_irdec
+/usr/lib/udev/rc_keymaps/adstech_dvb_t_pci.toml
+/usr/lib/udev/rc_keymaps/af9005.toml
+/usr/lib/udev/rc_keymaps/alink_dtu_m.toml
+/usr/lib/udev/rc_keymaps/anysee.toml
+/usr/lib/udev/rc_keymaps/apac_viewcomp.toml
+/usr/lib/udev/rc_keymaps/astrometa_t2hybrid.toml
+/usr/lib/udev/rc_keymaps/asus_pc39.toml
+/usr/lib/udev/rc_keymaps/asus_ps3_100.toml
+/usr/lib/udev/rc_keymaps/ati_tv_wonder_hd_600.toml
+/usr/lib/udev/rc_keymaps/ati_x10.toml
+/usr/lib/udev/rc_keymaps/avermedia.toml
+/usr/lib/udev/rc_keymaps/avermedia_a16d.toml
+/usr/lib/udev/rc_keymaps/avermedia_cardbus.toml
+/usr/lib/udev/rc_keymaps/avermedia_dvbt.toml
+/usr/lib/udev/rc_keymaps/avermedia_m135a.toml
+/usr/lib/udev/rc_keymaps/avermedia_m733a_rm_k6.toml
+/usr/lib/udev/rc_keymaps/avermedia_rm_ks.toml
+/usr/lib/udev/rc_keymaps/avertv_303.toml
+/usr/lib/udev/rc_keymaps/az6027.toml
+/usr/lib/udev/rc_keymaps/azurewave_ad_tu700.toml
+/usr/lib/udev/rc_keymaps/behold.toml
+/usr/lib/udev/rc_keymaps/behold_columbus.toml
+/usr/lib/udev/rc_keymaps/budget_ci_old.toml
+/usr/lib/udev/rc_keymaps/cec.toml
+/usr/lib/udev/rc_keymaps/cinergy.toml
+/usr/lib/udev/rc_keymaps/cinergy_1400.toml
+/usr/lib/udev/rc_keymaps/cinergyt2.toml
+/usr/lib/udev/rc_keymaps/d680_dmb.toml
+/usr/lib/udev/rc_keymaps/delock_61959.toml
+/usr/lib/udev/rc_keymaps/dib0700_nec.toml
+/usr/lib/udev/rc_keymaps/dib0700_rc5.toml
+/usr/lib/udev/rc_keymaps/dibusb.toml
+/usr/lib/udev/rc_keymaps/digitalnow_tinytwin.toml
+/usr/lib/udev/rc_keymaps/digittrade.toml
+/usr/lib/udev/rc_keymaps/digitv.toml
+/usr/lib/udev/rc_keymaps/dm1105_nec.toml
+/usr/lib/udev/rc_keymaps/dntv_live_dvb_t.toml
+/usr/lib/udev/rc_keymaps/dntv_live_dvbt_pro.toml
+/usr/lib/udev/rc_keymaps/dtt200u.toml
+/usr/lib/udev/rc_keymaps/dvbsky.toml
+/usr/lib/udev/rc_keymaps/dvico_mce.toml
+/usr/lib/udev/rc_keymaps/dvico_portable.toml
+/usr/lib/udev/rc_keymaps/em_terratec.toml
+/usr/lib/udev/rc_keymaps/encore_enltv.toml
+/usr/lib/udev/rc_keymaps/encore_enltv2.toml
+/usr/lib/udev/rc_keymaps/encore_enltv_fm53.toml
+/usr/lib/udev/rc_keymaps/evga_indtube.toml
+/usr/lib/udev/rc_keymaps/eztv.toml
+/usr/lib/udev/rc_keymaps/flydvb.toml
+/usr/lib/udev/rc_keymaps/flyvideo.toml
+/usr/lib/udev/rc_keymaps/fusionhdtv_mce.toml
+/usr/lib/udev/rc_keymaps/gadmei_rm008z.toml
+/usr/lib/udev/rc_keymaps/geekbox.toml
+/usr/lib/udev/rc_keymaps/genius_tvgo_a11mce.toml
+/usr/lib/udev/rc_keymaps/gotview7135.toml
+/usr/lib/udev/rc_keymaps/haupp.toml
+/usr/lib/udev/rc_keymaps/hauppauge.toml
+/usr/lib/udev/rc_keymaps/hisi_poplar.toml
+/usr/lib/udev/rc_keymaps/hisi_tv_demo.toml
+/usr/lib/udev/rc_keymaps/imon_mce.toml
+/usr/lib/udev/rc_keymaps/imon_pad.toml
+/usr/lib/udev/rc_keymaps/imon_rsc.toml
+/usr/lib/udev/rc_keymaps/iodata_bctv7e.toml
+/usr/lib/udev/rc_keymaps/it913x_v1.toml
+/usr/lib/udev/rc_keymaps/it913x_v2.toml
+/usr/lib/udev/rc_keymaps/kaiomy.toml
+/usr/lib/udev/rc_keymaps/kworld_315u.toml
+/usr/lib/udev/rc_keymaps/kworld_pc150u.toml
+/usr/lib/udev/rc_keymaps/kworld_plus_tv_analog.toml
+/usr/lib/udev/rc_keymaps/leadtek_y04g0051.toml
+/usr/lib/udev/rc_keymaps/lme2510.toml
+/usr/lib/udev/rc_keymaps/manli.toml
+/usr/lib/udev/rc_keymaps/medion_x10.toml
+/usr/lib/udev/rc_keymaps/medion_x10_digitainer.toml
+/usr/lib/udev/rc_keymaps/medion_x10_or2x.toml
+/usr/lib/udev/rc_keymaps/megasky.toml
+/usr/lib/udev/rc_keymaps/msi_digivox_ii.toml
+/usr/lib/udev/rc_keymaps/msi_digivox_iii.toml
+/usr/lib/udev/rc_keymaps/msi_tvanywhere.toml
+/usr/lib/udev/rc_keymaps/msi_tvanywhere_plus.toml
+/usr/lib/udev/rc_keymaps/nebula.toml
+/usr/lib/udev/rc_keymaps/nec_terratec_cinergy_xs.toml
+/usr/lib/udev/rc_keymaps/norwood.toml
+/usr/lib/udev/rc_keymaps/npgtech.toml
+/usr/lib/udev/rc_keymaps/opera1.toml
+/usr/lib/udev/rc_keymaps/pctv_sedna.toml
+/usr/lib/udev/rc_keymaps/pinnacle310e.toml
+/usr/lib/udev/rc_keymaps/pinnacle_color.toml
+/usr/lib/udev/rc_keymaps/pinnacle_grey.toml
+/usr/lib/udev/rc_keymaps/pinnacle_pctv_hd.toml
+/usr/lib/udev/rc_keymaps/pixelview.toml
+/usr/lib/udev/rc_keymaps/pixelview_002t.toml
+/usr/lib/udev/rc_keymaps/pixelview_mk12.toml
+/usr/lib/udev/rc_keymaps/pixelview_new.toml
+/usr/lib/udev/rc_keymaps/powercolor_real_angel.toml
+/usr/lib/udev/rc_keymaps/proteus_2309.toml
+/usr/lib/udev/rc_keymaps/protocols/grundig.o
+/usr/lib/udev/rc_keymaps/protocols/manchester.o
+/usr/lib/udev/rc_keymaps/protocols/pulse_distance.o
+/usr/lib/udev/rc_keymaps/protocols/pulse_length.o
+/usr/lib/udev/rc_keymaps/protocols/rc_mm.o
+/usr/lib/udev/rc_keymaps/purpletv.toml
+/usr/lib/udev/rc_keymaps/pv951.toml
+/usr/lib/udev/rc_keymaps/rc6_mce.toml
+/usr/lib/udev/rc_keymaps/real_audio_220_32_keys.toml
+/usr/lib/udev/rc_keymaps/reddo.toml
+/usr/lib/udev/rc_keymaps/snapstream_firefly.toml
+/usr/lib/udev/rc_keymaps/streamzap.toml
+/usr/lib/udev/rc_keymaps/su3000.toml
+/usr/lib/udev/rc_keymaps/tango.toml
+/usr/lib/udev/rc_keymaps/tbs_nec.toml
+/usr/lib/udev/rc_keymaps/technisat_ts35.toml
+/usr/lib/udev/rc_keymaps/technisat_usb2.toml
+/usr/lib/udev/rc_keymaps/terratec_cinergy_c_pci.toml
+/usr/lib/udev/rc_keymaps/terratec_cinergy_s2_hd.toml
+/usr/lib/udev/rc_keymaps/terratec_cinergy_xs.toml
+/usr/lib/udev/rc_keymaps/terratec_slim.toml
+/usr/lib/udev/rc_keymaps/terratec_slim_2.toml
+/usr/lib/udev/rc_keymaps/tevii_nec.toml
+/usr/lib/udev/rc_keymaps/tivo.toml
+/usr/lib/udev/rc_keymaps/total_media_in_hand.toml
+/usr/lib/udev/rc_keymaps/total_media_in_hand_02.toml
+/usr/lib/udev/rc_keymaps/trekstor.toml
+/usr/lib/udev/rc_keymaps/tt_1500.toml
+/usr/lib/udev/rc_keymaps/tvwalkertwin.toml
+/usr/lib/udev/rc_keymaps/twinhan_dtv_cab_ci.toml
+/usr/lib/udev/rc_keymaps/twinhan_vp1027_dvbs.toml
+/usr/lib/udev/rc_keymaps/videomate_k100.toml
+/usr/lib/udev/rc_keymaps/videomate_s350.toml
+/usr/lib/udev/rc_keymaps/videomate_tv_pvr.toml
+/usr/lib/udev/rc_keymaps/vp702x.toml
+/usr/lib/udev/rc_keymaps/winfast.toml
+/usr/lib/udev/rc_keymaps/winfast_usbii_deluxe.toml
+/usr/lib/udev/rc_keymaps/zx_irdec.toml
 /usr/lib64/libv4l/ov511-decomp
 /usr/lib64/libv4l/ov518-decomp
 
@@ -265,6 +300,8 @@ rm -rf %{buildroot}
 /usr/bin/ir-keytable
 /usr/bin/ivtv-ctl
 /usr/bin/media-ctl
+/usr/bin/qv4l2
+/usr/bin/qvidcap
 /usr/bin/rds-ctl
 /usr/bin/v4l2-compliance
 /usr/bin/v4l2-ctl
@@ -274,6 +311,21 @@ rm -rf %{buildroot}
 %files config
 %defattr(-,root,root,-)
 /usr/lib/udev/rules.d/70-infrared.rules
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/applications/qv4l2.desktop
+/usr/share/applications/qvidcap.desktop
+/usr/share/icons/hicolor/16x16/apps/qv4l2.png
+/usr/share/icons/hicolor/16x16/apps/qvidcap.png
+/usr/share/icons/hicolor/24x24/apps/qv4l2.png
+/usr/share/icons/hicolor/24x24/apps/qvidcap.png
+/usr/share/icons/hicolor/32x32/apps/qv4l2.png
+/usr/share/icons/hicolor/32x32/apps/qvidcap.png
+/usr/share/icons/hicolor/64x64/apps/qv4l2.png
+/usr/share/icons/hicolor/64x64/apps/qvidcap.png
+/usr/share/icons/hicolor/scalable/apps/qv4l2.svg
+/usr/share/icons/hicolor/scalable/apps/qvidcap.svg
 
 %files dev
 %defattr(-,root,root,-)
@@ -337,10 +389,6 @@ rm -rf %{buildroot}
 /usr/lib64/v4l1compat.so
 /usr/lib64/v4l2convert.so
 
-%files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
-
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libdvbv5.so.0
@@ -356,6 +404,28 @@ rm -rf %{buildroot}
 /usr/lib64/libv4l2rds.so.0.0.0
 /usr/lib64/libv4lconvert.so.0
 /usr/lib64/libv4lconvert.so.0.0.0
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/doc/v4l-utils/COPYING
+/usr/share/doc/v4l-utils/COPYING.libdvbv5
+/usr/share/doc/v4l-utils/COPYING.libv4l
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/cec-compliance.1
+/usr/share/man/man1/cec-ctl.1
+/usr/share/man/man1/cec-follower.1
+/usr/share/man/man1/dvb-fe-tool.1
+/usr/share/man/man1/dvb-format-convert.1
+/usr/share/man/man1/dvbv5-scan.1
+/usr/share/man/man1/dvbv5-zap.1
+/usr/share/man/man1/ir-ctl.1
+/usr/share/man/man1/ir-keytable.1
+/usr/share/man/man1/qv4l2.1
+/usr/share/man/man1/qvidcap.1
+/usr/share/man/man1/v4l2-compliance.1
+/usr/share/man/man1/v4l2-ctl.1
 
 %files locales -f libdvbv5.lang -f v4l-utils.lang
 %defattr(-,root,root,-)
