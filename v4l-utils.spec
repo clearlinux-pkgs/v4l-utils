@@ -5,27 +5,26 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.16.0
-Release  : 14
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.0.tar.bz2.asc
+Version  : 1.16.1
+Release  : 15
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.1.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.1.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.1.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
-Requires: v4l-utils-bin
-Requires: v4l-utils-config
-Requires: v4l-utils-lib
-Requires: v4l-utils-data
-Requires: v4l-utils-license
-Requires: v4l-utils-locales
-Requires: v4l-utils-man
+Requires: v4l-utils-bin = %{version}-%{release}
+Requires: v4l-utils-config = %{version}-%{release}
+Requires: v4l-utils-data = %{version}-%{release}
+Requires: v4l-utils-lib = %{version}-%{release}
+Requires: v4l-utils-license = %{version}-%{release}
+Requires: v4l-utils-locales = %{version}-%{release}
+Requires: v4l-utils-man = %{version}-%{release}
 BuildRequires : buildreq-kde
 BuildRequires : buildreq-qmake
 BuildRequires : doxygen
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
-BuildRequires : llvm-dev
 BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
@@ -116,14 +115,14 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.16.0
+%setup -q -n v4l-utils-1.16.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1538839433
+export SOURCE_DATE_EPOCH=1539974344
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -135,12 +134,12 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1538839433
+export SOURCE_DATE_EPOCH=1539974344
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/v4l-utils
-cp COPYING %{buildroot}/usr/share/doc/v4l-utils/COPYING
-cp COPYING.libdvbv5 %{buildroot}/usr/share/doc/v4l-utils/COPYING.libdvbv5
-cp COPYING.libv4l %{buildroot}/usr/share/doc/v4l-utils/COPYING.libv4l
+mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
+cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
+cp COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING.libdvbv5
+cp COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING.libv4l
 %make_install
 %find_lang libdvbv5
 %find_lang v4l-utils
@@ -407,9 +406,9 @@ cp COPYING.libv4l %{buildroot}/usr/share/doc/v4l-utils/COPYING.libv4l
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/doc/v4l-utils/COPYING
-/usr/share/doc/v4l-utils/COPYING.libdvbv5
-/usr/share/doc/v4l-utils/COPYING.libv4l
+/usr/share/package-licenses/v4l-utils/COPYING
+/usr/share/package-licenses/v4l-utils/COPYING.libdvbv5
+/usr/share/package-licenses/v4l-utils/COPYING.libv4l
 
 %files man
 %defattr(0644,root,root,0755)
