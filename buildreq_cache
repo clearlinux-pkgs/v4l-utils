@@ -2,3 +2,4 @@
 graphviz
 libjpeg-turbo-dev
 llvm-dev
+pkg-config

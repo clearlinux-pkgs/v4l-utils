@@ -7,3 +7,11 @@ QtOpenGL
 QtGui
 Qt5Widgets
 Qt5Gui
+32Qt5Core
+32Qt5OpenGL
+32QtCore
+3232QtOpenGL
+32QtGui
+32Qt5Widgets
+32Qt5Gui
+32QtOpenGL
