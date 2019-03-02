@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.16.3
-Release  : 18
+Release  : 19
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2
 Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2.asc
@@ -110,6 +110,14 @@ Requires: v4l-utils-dev = %{version}-%{release}
 dev32 components for the v4l-utils package.
 
 
+%package extras
+Summary: extras components for the v4l-utils package.
+Group: Default
+
+%description extras
+extras components for the v4l-utils package.
+
+
 %package lib
 Summary: lib components for the v4l-utils package.
 Group: Libraries
@@ -165,7 +173,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1551541304
+export SOURCE_DATE_EPOCH=1551561160
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -188,7 +196,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1551541304
+export SOURCE_DATE_EPOCH=1551561160
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
@@ -209,6 +217,10 @@ popd
 
 %files
 %defattr(-,root,root,-)
+%exclude /usr/lib32/libv4l/ov511-decomp
+%exclude /usr/lib32/libv4l/ov518-decomp
+%exclude /usr/lib64/libv4l/ov511-decomp
+%exclude /usr/lib64/libv4l/ov518-decomp
 /usr/lib/udev/rc_keymaps/adstech_dvb_t_pci.toml
 /usr/lib/udev/rc_keymaps/af9005.toml
 /usr/lib/udev/rc_keymaps/alink_dtu_m.toml
@@ -343,10 +355,6 @@ popd
 /usr/lib/udev/rc_keymaps/winfast.toml
 /usr/lib/udev/rc_keymaps/winfast_usbii_deluxe.toml
 /usr/lib/udev/rc_keymaps/zx_irdec.toml
-/usr/lib32/libv4l/ov511-decomp
-/usr/lib32/libv4l/ov518-decomp
-/usr/lib64/libv4l/ov511-decomp
-/usr/lib64/libv4l/ov518-decomp
 
 %files bin
 %defattr(-,root,root,-)
@@ -472,6 +480,13 @@ popd
 /usr/lib32/pkgconfig/libv4lconvert.pc
 /usr/lib32/v4l1compat.so
 /usr/lib32/v4l2convert.so
+
+%files extras
+%defattr(-,root,root,-)
+/usr/lib32/libv4l/ov511-decomp
+/usr/lib32/libv4l/ov518-decomp
+/usr/lib64/libv4l/ov511-decomp
+/usr/lib64/libv4l/ov518-decomp
 
 %files lib
 %defattr(-,root,root,-)
