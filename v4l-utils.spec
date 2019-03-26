@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.16.3
-Release  : 19
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.3.tar.bz2.asc
-Summary  : Userspace tools and conversion library for Video 4 Linux
+Version  : 1.16.4
+Release  : 20
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.4.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.4.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.4.tar.bz2.asc
+Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -30,7 +30,7 @@ BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
-BuildRequires : llvm-dev
+BuildRequires : llvm
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32SDL2_image)
 BuildRequires : pkgconfig(32alsa)
@@ -50,12 +50,10 @@ BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
-Introduction
-------------
-libv4l is a collection of libraries which adds a thin abstraction layer on
-top of video4linux2 devices. The purpose of this (thin) layer is to make it
-easy for application writers to support a wide variety of devices without
-having to write separate code for different devices in the same class.
+v4l-utils
+---------
+Linux utilities and libraries to handle media devices (TV devices,
+capture devices, radio devices, remote controllers).
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -63,6 +61,7 @@ Group: Binaries
 Requires: v4l-utils-data = %{version}-%{release}
 Requires: v4l-utils-config = %{version}-%{release}
 Requires: v4l-utils-license = %{version}-%{release}
+Requires: v4l-utils-man = %{version}-%{release}
 
 %description bin
 bin components for the v4l-utils package.
@@ -90,9 +89,7 @@ Group: Development
 Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-bin = %{version}-%{release}
 Requires: v4l-utils-data = %{version}-%{release}
-Requires: v4l-utils-man = %{version}-%{release}
 Provides: v4l-utils-devel = %{version}-%{release}
-Requires: v4l-utils = %{version}-%{release}
 
 %description dev
 dev components for the v4l-utils package.
@@ -163,9 +160,9 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.16.3
+%setup -q -n v4l-utils-1.16.4
 pushd ..
-cp -a v4l-utils-1.16.3 build32
+cp -a v4l-utils-1.16.4 build32
 popd
 
 %build
@@ -173,16 +170,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1551561160
+export SOURCE_DATE_EPOCH=1553636577
+export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static  --disable-qv4l2 --disable-v4l-utils  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -196,7 +194,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1551561160
+export SOURCE_DATE_EPOCH=1553636577
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
