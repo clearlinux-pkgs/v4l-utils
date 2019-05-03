@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.16.5
-Release  : 22
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.5.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.5.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.5.tar.bz2.asc
+Version  : 1.16.6
+Release  : 23
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
+Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2.asc
 Summary  : Userspace tools and conversion library for Video 4 Linux
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -162,9 +162,9 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.16.5
+%setup -q -n v4l-utils-1.16.6
 pushd ..
-cp -a v4l-utils-1.16.5 build32
+cp -a v4l-utils-1.16.6 build32
 popd
 
 %build
@@ -172,7 +172,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554130779
+export SOURCE_DATE_EPOCH=1556922441
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -195,7 +195,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1554130779
+export SOURCE_DATE_EPOCH=1556922441
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
