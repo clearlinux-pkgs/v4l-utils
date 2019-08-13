@@ -6,11 +6,11 @@
 #
 Name     : v4l-utils
 Version  : 1.16.6
-Release  : 23
+Release  : 24
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
-Source99 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2.asc
-Summary  : Userspace tools and conversion library for Video 4 Linux
+Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2.asc
+Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -31,6 +31,7 @@ BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : llvm
+BuildRequires : llvm-dev
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32SDL2_image)
 BuildRequires : pkgconfig(32alsa)
@@ -50,12 +51,10 @@ BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
-Introduction
-------------
-libv4l is a collection of libraries which adds a thin abstraction layer on
-top of video4linux2 devices. The purpose of this (thin) layer is to make it
-easy for application writers to support a wide variety of devices without
-having to write separate code for different devices in the same class.
+v4l-utils
+---------
+Linux utilities and libraries to handle media devices (TV devices,
+capture devices, radio devices, remote controllers).
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -117,6 +116,14 @@ Group: Default
 extras components for the v4l-utils package.
 
 
+%package extras-qt
+Summary: extras-qt components for the v4l-utils package.
+Group: Default
+
+%description extras-qt
+extras-qt components for the v4l-utils package.
+
+
 %package lib
 Summary: lib components for the v4l-utils package.
 Group: Libraries
@@ -171,8 +178,13 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556922441
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1565720160
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -186,7 +198,7 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -195,7 +207,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1556922441
+export SOURCE_DATE_EPOCH=1565720160
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
@@ -216,10 +228,6 @@ popd
 
 %files
 %defattr(-,root,root,-)
-%exclude /usr/lib32/libv4l/ov511-decomp
-%exclude /usr/lib32/libv4l/ov518-decomp
-%exclude /usr/lib64/libv4l/ov511-decomp
-%exclude /usr/lib64/libv4l/ov518-decomp
 /usr/lib/udev/rc_keymaps/adstech_dvb_t_pci.toml
 /usr/lib/udev/rc_keymaps/af9005.toml
 /usr/lib/udev/rc_keymaps/alink_dtu_m.toml
@@ -371,8 +379,6 @@ popd
 /usr/bin/ir-keytable
 /usr/bin/ivtv-ctl
 /usr/bin/media-ctl
-/usr/bin/qv4l2
-/usr/bin/qvidcap
 /usr/bin/rds-ctl
 /usr/bin/v4l2-compliance
 /usr/bin/v4l2-ctl
@@ -486,6 +492,11 @@ popd
 /usr/lib32/libv4l/ov518-decomp
 /usr/lib64/libv4l/ov511-decomp
 /usr/lib64/libv4l/ov518-decomp
+
+%files extras-qt
+%defattr(-,root,root,-)
+/usr/bin/qv4l2
+/usr/bin/qvidcap
 
 %files lib
 %defattr(-,root,root,-)
