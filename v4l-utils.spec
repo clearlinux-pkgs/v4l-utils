@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.16.6
-Release  : 24
+Release  : 34
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2
 Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.6.tar.bz2.asc
@@ -179,7 +179,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1565720160
+export SOURCE_DATE_EPOCH=1565732952
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
@@ -207,7 +207,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1565720160
+export SOURCE_DATE_EPOCH=1565732952
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
