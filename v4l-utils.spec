@@ -6,11 +6,11 @@
 #
 Name     : v4l-utils
 Version  : 1.16.7
-Release  : 35
+Release  : 36
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2
 Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2.asc
-Summary  : Userspace tools and conversion library for Video 4 Linux
+Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -31,6 +31,7 @@ BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : llvm
+BuildRequires : llvm-dev
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32SDL2_image)
 BuildRequires : pkgconfig(32alsa)
@@ -50,12 +51,10 @@ BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
-Introduction
-------------
-libv4l is a collection of libraries which adds a thin abstraction layer on
-top of video4linux2 devices. The purpose of this (thin) layer is to make it
-easy for application writers to support a wide variety of devices without
-having to write separate code for different devices in the same class.
+v4l-utils
+---------
+Linux utilities and libraries to handle media devices (TV devices,
+capture devices, radio devices, remote controllers).
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -91,7 +90,6 @@ Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-bin = %{version}-%{release}
 Requires: v4l-utils-data = %{version}-%{release}
 Provides: v4l-utils-devel = %{version}-%{release}
-Requires: v4l-utils = %{version}-%{release}
 Requires: v4l-utils = %{version}-%{release}
 
 %description dev
@@ -181,8 +179,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567440210
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1568878588
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -197,9 +194,9 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static  --disable-qv4l2 --disable-v4l-utils  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -213,7 +210,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1567440210
+export SOURCE_DATE_EPOCH=1568878588
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
@@ -412,7 +409,6 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
 /usr/include/libdvbv5/atsc_eit.h
 /usr/include/libdvbv5/atsc_header.h
 /usr/include/libdvbv5/cat.h
@@ -459,6 +455,12 @@ popd
 /usr/include/libdvbv5/pmt.h
 /usr/include/libdvbv5/sdt.h
 /usr/include/libdvbv5/vct.h
+/usr/include/libv4l-plugin.h
+/usr/include/libv4l1-videodev.h
+/usr/include/libv4l1.h
+/usr/include/libv4l2.h
+/usr/include/libv4l2rds.h
+/usr/include/libv4lconvert.h
 /usr/lib64/libdvbv5.so
 /usr/lib64/libv4l1.so
 /usr/lib64/libv4l2.so
