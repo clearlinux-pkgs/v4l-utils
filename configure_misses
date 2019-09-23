@@ -11,7 +11,6 @@ Configure miss: i686-generic-linux-gnu-makeindex
 Configure miss: i686-generic-linux-gnu-dvips
 Configure miss: i686-generic-linux-gnu-egrep
 Configure miss: i686-generic-linux-gnu-pdflatex
-Configure miss: i686-generic-linux-gnu-makeindex
 Configure miss: ioctl with POSIX signature
 Configure miss: whether sys/types.h defines makedev
 Configure miss: jpeg_read_header in -ljpeg

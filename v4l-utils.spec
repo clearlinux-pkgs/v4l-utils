@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.16.7
-Release  : 36
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2
-Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.16.7.tar.bz2.asc
-Summary  : Media controller library.
+Version  : 1.18.0
+Release  : 37
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2
+Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2.asc
+Summary  : Userspace tools and conversion library for Video 4 Linux
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -31,7 +31,6 @@ BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : llvm
-BuildRequires : llvm-dev
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32SDL2_image)
 BuildRequires : pkgconfig(32alsa)
@@ -51,10 +50,12 @@ BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
-v4l-utils
----------
-Linux utilities and libraries to handle media devices (TV devices,
-capture devices, radio devices, remote controllers).
+Introduction
+------------
+libv4l is a collection of libraries which adds a thin abstraction layer on
+top of video4linux2 devices. The purpose of this (thin) layer is to make it
+easy for application writers to support a wide variety of devices without
+having to write separate code for different devices in the same class.
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -90,6 +91,7 @@ Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-bin = %{version}-%{release}
 Requires: v4l-utils-data = %{version}-%{release}
 Provides: v4l-utils-devel = %{version}-%{release}
+Requires: v4l-utils = %{version}-%{release}
 Requires: v4l-utils = %{version}-%{release}
 
 %description dev
@@ -169,9 +171,9 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.16.7
+%setup -q -n v4l-utils-1.18.0
 pushd ..
-cp -a v4l-utils-1.16.7 build32
+cp -a v4l-utils-1.18.0 build32
 popd
 
 %build
@@ -179,7 +181,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568878588
+export SOURCE_DATE_EPOCH=1569263210
+# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -210,7 +213,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1568878588
+export SOURCE_DATE_EPOCH=1569263210
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
@@ -234,6 +237,8 @@ popd
 /usr/lib/udev/rc_keymaps/adstech_dvb_t_pci.toml
 /usr/lib/udev/rc_keymaps/af9005.toml
 /usr/lib/udev/rc_keymaps/alink_dtu_m.toml
+/usr/lib/udev/rc_keymaps/allwinner_ba10_tv_box.toml
+/usr/lib/udev/rc_keymaps/allwinner_i12_a20_tv_box.toml
 /usr/lib/udev/rc_keymaps/anysee.toml
 /usr/lib/udev/rc_keymaps/apac_viewcomp.toml
 /usr/lib/udev/rc_keymaps/astrometa_t2hybrid.toml
@@ -266,6 +271,7 @@ popd
 /usr/lib/udev/rc_keymaps/digitalnow_tinytwin.toml
 /usr/lib/udev/rc_keymaps/digittrade.toml
 /usr/lib/udev/rc_keymaps/digitv.toml
+/usr/lib/udev/rc_keymaps/dish_network.toml
 /usr/lib/udev/rc_keymaps/dm1105_nec.toml
 /usr/lib/udev/rc_keymaps/dntv_live_dvb_t.toml
 /usr/lib/udev/rc_keymaps/dntv_live_dvbt_pro.toml
@@ -303,6 +309,7 @@ popd
 /usr/lib/udev/rc_keymaps/leadtek_y04g0051.toml
 /usr/lib/udev/rc_keymaps/lme2510.toml
 /usr/lib/udev/rc_keymaps/manli.toml
+/usr/lib/udev/rc_keymaps/mce_keyboard.toml
 /usr/lib/udev/rc_keymaps/medion_x10.toml
 /usr/lib/udev/rc_keymaps/medion_x10_digitainer.toml
 /usr/lib/udev/rc_keymaps/medion_x10_or2x.toml
@@ -328,10 +335,13 @@ popd
 /usr/lib/udev/rc_keymaps/powercolor_real_angel.toml
 /usr/lib/udev/rc_keymaps/proteus_2309.toml
 /usr/lib/udev/rc_keymaps/protocols/grundig.o
+/usr/lib/udev/rc_keymaps/protocols/imon_rsc.o
 /usr/lib/udev/rc_keymaps/protocols/manchester.o
 /usr/lib/udev/rc_keymaps/protocols/pulse_distance.o
 /usr/lib/udev/rc_keymaps/protocols/pulse_length.o
+/usr/lib/udev/rc_keymaps/protocols/raw.o
 /usr/lib/udev/rc_keymaps/protocols/rc_mm.o
+/usr/lib/udev/rc_keymaps/protocols/xbox-dvd.o
 /usr/lib/udev/rc_keymaps/purpletv.toml
 /usr/lib/udev/rc_keymaps/pv951.toml
 /usr/lib/udev/rc_keymaps/rc6_mce.toml
@@ -364,6 +374,8 @@ popd
 /usr/lib/udev/rc_keymaps/vp702x.toml
 /usr/lib/udev/rc_keymaps/winfast.toml
 /usr/lib/udev/rc_keymaps/winfast_usbii_deluxe.toml
+/usr/lib/udev/rc_keymaps/wobo_i5.toml
+/usr/lib/udev/rc_keymaps/xbox_dvd.toml
 /usr/lib/udev/rc_keymaps/zx_irdec.toml
 
 %files bin
@@ -559,6 +571,7 @@ popd
 /usr/share/man/man1/qvidcap.1
 /usr/share/man/man1/v4l2-compliance.1
 /usr/share/man/man1/v4l2-ctl.1
+/usr/share/man/man5/rc_keymap.5
 
 %files locales -f libdvbv5.lang -f v4l-utils.lang
 %defattr(-,root,root,-)
