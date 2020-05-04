@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.18.0
-Release  : 37
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2
-Source1 : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.0.tar.bz2.asc
-Summary  : Userspace tools and conversion library for Video 4 Linux
+Version  : 1.18.1
+Release  : 38
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2.asc
+Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -31,6 +31,7 @@ BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : llvm
+BuildRequires : perl
 BuildRequires : pkg-config
 BuildRequires : pkgconfig(32SDL2_image)
 BuildRequires : pkgconfig(32alsa)
@@ -50,12 +51,10 @@ BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
 
 %description
-Introduction
-------------
-libv4l is a collection of libraries which adds a thin abstraction layer on
-top of video4linux2 devices. The purpose of this (thin) layer is to make it
-easy for application writers to support a wide variety of devices without
-having to write separate code for different devices in the same class.
+v4l-utils
+---------
+Linux utilities and libraries to handle media devices (TV devices,
+capture devices, radio devices, remote controllers).
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -91,7 +90,6 @@ Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-bin = %{version}-%{release}
 Requires: v4l-utils-data = %{version}-%{release}
 Provides: v4l-utils-devel = %{version}-%{release}
-Requires: v4l-utils = %{version}-%{release}
 Requires: v4l-utils = %{version}-%{release}
 
 %description dev
@@ -171,9 +169,10 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.18.0
+%setup -q -n v4l-utils-1.18.1
+cd %{_builddir}/v4l-utils-1.18.1
 pushd ..
-cp -a v4l-utils-1.18.0 build32
+cp -a v4l-utils-1.18.1 build32
 popd
 
 %build
@@ -181,15 +180,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569263210
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1588633048
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -213,12 +211,12 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1569263210
+export SOURCE_DATE_EPOCH=1588633048
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
-cp COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING
-cp COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING.libdvbv5
-cp COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/COPYING.libv4l
+cp %{_builddir}/v4l-utils-1.18.1/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
+cp %{_builddir}/v4l-utils-1.18.1/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
+cp %{_builddir}/v4l-utils-1.18.1/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -552,9 +550,9 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/v4l-utils/COPYING
-/usr/share/package-licenses/v4l-utils/COPYING.libdvbv5
-/usr/share/package-licenses/v4l-utils/COPYING.libv4l
+/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
+/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
 
 %files man
 %defattr(0644,root,root,0755)
