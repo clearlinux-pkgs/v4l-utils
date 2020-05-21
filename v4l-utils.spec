@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.18.1
-Release  : 38
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2
-Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.18.1.tar.bz2.asc
+Version  : 1.20.0
+Release  : 39
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -20,6 +20,7 @@ Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-license = %{version}-%{release}
 Requires: v4l-utils-locales = %{version}-%{release}
 Requires: v4l-utils-man = %{version}-%{release}
+Requires: v4l-utils-services = %{version}-%{release}
 BuildRequires : buildreq-kde
 BuildRequires : buildreq-qmake
 BuildRequires : doxygen
@@ -62,6 +63,7 @@ Group: Binaries
 Requires: v4l-utils-data = %{version}-%{release}
 Requires: v4l-utils-config = %{version}-%{release}
 Requires: v4l-utils-license = %{version}-%{release}
+Requires: v4l-utils-services = %{version}-%{release}
 
 %description bin
 bin components for the v4l-utils package.
@@ -168,11 +170,19 @@ Group: Default
 man components for the v4l-utils package.
 
 
+%package services
+Summary: services components for the v4l-utils package.
+Group: Systemd services
+
+%description services
+services components for the v4l-utils package.
+
+
 %prep
-%setup -q -n v4l-utils-1.18.1
-cd %{_builddir}/v4l-utils-1.18.1
+%setup -q -n v4l-utils-1.20.0
+cd %{_builddir}/v4l-utils-1.20.0
 pushd ..
-cp -a v4l-utils-1.18.1 build32
+cp -a v4l-utils-1.20.0 build32
 popd
 
 %build
@@ -180,7 +190,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1588633048
+export SOURCE_DATE_EPOCH=1590080342
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -211,12 +221,12 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1588633048
+export SOURCE_DATE_EPOCH=1590080342
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
-cp %{_builddir}/v4l-utils-1.18.1/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
-cp %{_builddir}/v4l-utils-1.18.1/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
-cp %{_builddir}/v4l-utils-1.18.1/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+cp %{_builddir}/v4l-utils-1.20.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
+cp %{_builddir}/v4l-utils-1.20.0/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
+cp %{_builddir}/v4l-utils-1.20.0/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -254,6 +264,7 @@ popd
 /usr/lib/udev/rc_keymaps/avertv_303.toml
 /usr/lib/udev/rc_keymaps/az6027.toml
 /usr/lib/udev/rc_keymaps/azurewave_ad_tu700.toml
+/usr/lib/udev/rc_keymaps/beelink_gs1.toml
 /usr/lib/udev/rc_keymaps/behold.toml
 /usr/lib/udev/rc_keymaps/behold_columbus.toml
 /usr/lib/udev/rc_keymaps/budget_ci_old.toml
@@ -301,6 +312,8 @@ popd
 /usr/lib/udev/rc_keymaps/it913x_v1.toml
 /usr/lib/udev/rc_keymaps/it913x_v2.toml
 /usr/lib/udev/rc_keymaps/kaiomy.toml
+/usr/lib/udev/rc_keymaps/khadas.toml
+/usr/lib/udev/rc_keymaps/kii_pro.toml
 /usr/lib/udev/rc_keymaps/kworld_315u.toml
 /usr/lib/udev/rc_keymaps/kworld_pc150u.toml
 /usr/lib/udev/rc_keymaps/kworld_plus_tv_analog.toml
@@ -320,6 +333,7 @@ popd
 /usr/lib/udev/rc_keymaps/nec_terratec_cinergy_xs.toml
 /usr/lib/udev/rc_keymaps/norwood.toml
 /usr/lib/udev/rc_keymaps/npgtech.toml
+/usr/lib/udev/rc_keymaps/odroid.toml
 /usr/lib/udev/rc_keymaps/opera1.toml
 /usr/lib/udev/rc_keymaps/pctv_sedna.toml
 /usr/lib/udev/rc_keymaps/pinnacle310e.toml
@@ -339,6 +353,7 @@ popd
 /usr/lib/udev/rc_keymaps/protocols/pulse_length.o
 /usr/lib/udev/rc_keymaps/protocols/raw.o
 /usr/lib/udev/rc_keymaps/protocols/rc_mm.o
+/usr/lib/udev/rc_keymaps/protocols/samsung36.o
 /usr/lib/udev/rc_keymaps/protocols/xbox-dvd.o
 /usr/lib/udev/rc_keymaps/purpletv.toml
 /usr/lib/udev/rc_keymaps/pv951.toml
@@ -349,6 +364,8 @@ popd
 /usr/lib/udev/rc_keymaps/streamzap.toml
 /usr/lib/udev/rc_keymaps/su3000.toml
 /usr/lib/udev/rc_keymaps/tango.toml
+/usr/lib/udev/rc_keymaps/tanix_tx3mini.toml
+/usr/lib/udev/rc_keymaps/tanix_tx5max.toml
 /usr/lib/udev/rc_keymaps/tbs_nec.toml
 /usr/lib/udev/rc_keymaps/technisat_ts35.toml
 /usr/lib/udev/rc_keymaps/technisat_usb2.toml
@@ -366,13 +383,17 @@ popd
 /usr/lib/udev/rc_keymaps/tvwalkertwin.toml
 /usr/lib/udev/rc_keymaps/twinhan_dtv_cab_ci.toml
 /usr/lib/udev/rc_keymaps/twinhan_vp1027_dvbs.toml
+/usr/lib/udev/rc_keymaps/vega_s9x.toml
 /usr/lib/udev/rc_keymaps/videomate_k100.toml
 /usr/lib/udev/rc_keymaps/videomate_s350.toml
 /usr/lib/udev/rc_keymaps/videomate_tv_pvr.toml
 /usr/lib/udev/rc_keymaps/vp702x.toml
+/usr/lib/udev/rc_keymaps/wetek_hub.toml
+/usr/lib/udev/rc_keymaps/wetek_play2.toml
 /usr/lib/udev/rc_keymaps/winfast.toml
 /usr/lib/udev/rc_keymaps/winfast_usbii_deluxe.toml
 /usr/lib/udev/rc_keymaps/wobo_i5.toml
+/usr/lib/udev/rc_keymaps/x96max.toml
 /usr/lib/udev/rc_keymaps/xbox_dvd.toml
 /usr/lib/udev/rc_keymaps/zx_irdec.toml
 
@@ -570,6 +591,10 @@ popd
 /usr/share/man/man1/v4l2-compliance.1
 /usr/share/man/man1/v4l2-ctl.1
 /usr/share/man/man5/rc_keymap.5
+
+%files services
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/systemd-udevd.service.d/50-rc_keymap.conf
 
 %files locales -f libdvbv5.lang -f v4l-utils.lang
 %defattr(-,root,root,-)
