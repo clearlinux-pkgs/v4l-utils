@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.20.0
-Release  : 41
+Release  : 42
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
 Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2.asc
@@ -24,11 +24,23 @@ Requires: v4l-utils-services = %{version}-%{release}
 BuildRequires : buildreq-kde
 BuildRequires : buildreq-qmake
 BuildRequires : doxygen
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : graphviz
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : llvm
 BuildRequires : perl
 BuildRequires : pkg-config
+BuildRequires : pkgconfig(32alsa)
+BuildRequires : pkgconfig(32gl)
+BuildRequires : pkgconfig(32glu)
+BuildRequires : pkgconfig(32libelf)
+BuildRequires : pkgconfig(32libudev)
+BuildRequires : pkgconfig(32sdl2)
+BuildRequires : pkgconfig(32x11)
 BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
@@ -85,6 +97,18 @@ Requires: v4l-utils = %{version}-%{release}
 dev components for the v4l-utils package.
 
 
+%package dev32
+Summary: dev32 components for the v4l-utils package.
+Group: Default
+Requires: v4l-utils-lib32 = %{version}-%{release}
+Requires: v4l-utils-bin = %{version}-%{release}
+Requires: v4l-utils-data = %{version}-%{release}
+Requires: v4l-utils-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the v4l-utils package.
+
+
 %package extras
 Summary: extras components for the v4l-utils package.
 Group: Default
@@ -109,6 +133,16 @@ Requires: v4l-utils-license = %{version}-%{release}
 
 %description lib
 lib components for the v4l-utils package.
+
+
+%package lib32
+Summary: lib32 components for the v4l-utils package.
+Group: Default
+Requires: v4l-utils-data = %{version}-%{release}
+Requires: v4l-utils-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the v4l-utils package.
 
 
 %package license
@@ -146,13 +180,16 @@ services components for the v4l-utils package.
 %prep
 %setup -q -n v4l-utils-1.20.0
 cd %{_builddir}/v4l-utils-1.20.0
+pushd ..
+cp -a v4l-utils-1.20.0 build32
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1600307825
+export SOURCE_DATE_EPOCH=1600373908
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -164,20 +201,40 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+%configure --disable-static  --disable-qv4l2 --disable-v4l-utils  --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
+cd ../build32;
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1600307825
+export SOURCE_DATE_EPOCH=1600373908
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp %{_builddir}/v4l-utils-1.20.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
 cp %{_builddir}/v4l-utils-1.20.0/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
 cp %{_builddir}/v4l-utils-1.20.0/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 %find_lang libdvbv5
 %find_lang v4l-utils
@@ -447,8 +504,30 @@ cp %{_builddir}/v4l-utils-1.20.0/COPYING.libv4l %{buildroot}/usr/share/package-l
 /usr/lib64/v4l1compat.so
 /usr/lib64/v4l2convert.so
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libdvbv5.so
+/usr/lib32/libv4l1.so
+/usr/lib32/libv4l2.so
+/usr/lib32/libv4l2rds.so
+/usr/lib32/libv4lconvert.so
+/usr/lib32/pkgconfig/32libdvbv5.pc
+/usr/lib32/pkgconfig/32libv4l1.pc
+/usr/lib32/pkgconfig/32libv4l2.pc
+/usr/lib32/pkgconfig/32libv4l2rds.pc
+/usr/lib32/pkgconfig/32libv4lconvert.pc
+/usr/lib32/pkgconfig/libdvbv5.pc
+/usr/lib32/pkgconfig/libv4l1.pc
+/usr/lib32/pkgconfig/libv4l2.pc
+/usr/lib32/pkgconfig/libv4l2rds.pc
+/usr/lib32/pkgconfig/libv4lconvert.pc
+/usr/lib32/v4l1compat.so
+/usr/lib32/v4l2convert.so
+
 %files extras
 %defattr(-,root,root,-)
+/usr/lib32/libv4l/ov511-decomp
+/usr/lib32/libv4l/ov518-decomp
 /usr/lib64/libv4l/ov511-decomp
 /usr/lib64/libv4l/ov518-decomp
 
@@ -472,6 +551,22 @@ cp %{_builddir}/v4l-utils-1.20.0/COPYING.libv4l %{buildroot}/usr/share/package-l
 /usr/lib64/libv4l2rds.so.0.0.0
 /usr/lib64/libv4lconvert.so.0
 /usr/lib64/libv4lconvert.so.0.0.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libdvbv5.so.0
+/usr/lib32/libdvbv5.so.0.0.0
+/usr/lib32/libv4l/plugins/libv4l-mplane.so
+/usr/lib32/libv4l/v4l1compat.so
+/usr/lib32/libv4l/v4l2convert.so
+/usr/lib32/libv4l1.so.0
+/usr/lib32/libv4l1.so.0.0.0
+/usr/lib32/libv4l2.so.0
+/usr/lib32/libv4l2.so.0.0.0
+/usr/lib32/libv4l2rds.so.0
+/usr/lib32/libv4l2rds.so.0.0.0
+/usr/lib32/libv4lconvert.so.0
+/usr/lib32/libv4lconvert.so.0.0.0
 
 %files license
 %defattr(0644,root,root,0755)
