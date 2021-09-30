@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.20.0
-Release  : 42
+Release  : 43
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
 Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2.asc
@@ -49,6 +49,7 @@ BuildRequires : pkgconfig(libelf)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
+Patch1: 0001-v4l2-tpg.patch-rename-min-max-defines-to-tpg_min-max.patch
 
 %description
 v4l-utils
@@ -180,6 +181,7 @@ services components for the v4l-utils package.
 %prep
 %setup -q -n v4l-utils-1.20.0
 cd %{_builddir}/v4l-utils-1.20.0
+%patch1 -p1
 pushd ..
 cp -a v4l-utils-1.20.0 build32
 popd
@@ -189,20 +191,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1600373908
+export SOURCE_DATE_EPOCH=1633045485
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -220,7 +222,7 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1600373908
+export SOURCE_DATE_EPOCH=1633045485
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp %{_builddir}/v4l-utils-1.20.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
@@ -231,6 +233,12 @@ pushd ../build32/
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
