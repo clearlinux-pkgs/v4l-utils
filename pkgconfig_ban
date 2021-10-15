@@ -16,3 +16,4 @@ Qt5Gui
 32Qt5Gui
 32QtOpenGL
 32SDL2_image
+32libbpf

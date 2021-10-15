@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.20.0
-Release  : 43
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2
-Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.20.0.tar.bz2.asc
+Version  : 1.22.0
+Release  : 44
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -45,11 +45,11 @@ BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
+BuildRequires : pkgconfig(libbpf)
 BuildRequires : pkgconfig(libelf)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
-Patch1: 0001-v4l2-tpg.patch-rename-min-max-defines-to-tpg_min-max.patch
 
 %description
 v4l-utils
@@ -179,11 +179,10 @@ services components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.20.0
-cd %{_builddir}/v4l-utils-1.20.0
-%patch1 -p1
+%setup -q -n v4l-utils-1.22.0
+cd %{_builddir}/v4l-utils-1.22.0
 pushd ..
-cp -a v4l-utils-1.20.0 build32
+cp -a v4l-utils-1.22.0 build32
 popd
 
 %build
@@ -191,7 +190,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1633045485
+export SOURCE_DATE_EPOCH=1634340616
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -222,12 +221,12 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1633045485
+export SOURCE_DATE_EPOCH=1634340616
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
-cp %{_builddir}/v4l-utils-1.20.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
-cp %{_builddir}/v4l-utils-1.20.0/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
-cp %{_builddir}/v4l-utils-1.20.0/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+cp %{_builddir}/v4l-utils-1.22.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
+cp %{_builddir}/v4l-utils-1.22.0/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
+cp %{_builddir}/v4l-utils-1.22.0/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -320,6 +319,7 @@ popd
 /usr/lib/udev/rc_keymaps/it913x_v2.toml
 /usr/lib/udev/rc_keymaps/kaiomy.toml
 /usr/lib/udev/rc_keymaps/khadas.toml
+/usr/lib/udev/rc_keymaps/khamsin.toml
 /usr/lib/udev/rc_keymaps/kii_pro.toml
 /usr/lib/udev/rc_keymaps/kworld_315u.toml
 /usr/lib/udev/rc_keymaps/kworld_pc150u.toml
@@ -332,6 +332,7 @@ popd
 /usr/lib/udev/rc_keymaps/medion_x10_digitainer.toml
 /usr/lib/udev/rc_keymaps/medion_x10_or2x.toml
 /usr/lib/udev/rc_keymaps/megasky.toml
+/usr/lib/udev/rc_keymaps/minix_neo.toml
 /usr/lib/udev/rc_keymaps/msi_digivox_ii.toml
 /usr/lib/udev/rc_keymaps/msi_digivox_iii.toml
 /usr/lib/udev/rc_keymaps/msi_tvanywhere.toml
@@ -343,6 +344,7 @@ popd
 /usr/lib/udev/rc_keymaps/odroid.toml
 /usr/lib/udev/rc_keymaps/opera1.toml
 /usr/lib/udev/rc_keymaps/pctv_sedna.toml
+/usr/lib/udev/rc_keymaps/pine64.toml
 /usr/lib/udev/rc_keymaps/pinnacle310e.toml
 /usr/lib/udev/rc_keymaps/pinnacle_color.toml
 /usr/lib/udev/rc_keymaps/pinnacle_grey.toml
@@ -367,10 +369,10 @@ popd
 /usr/lib/udev/rc_keymaps/rc6_mce.toml
 /usr/lib/udev/rc_keymaps/real_audio_220_32_keys.toml
 /usr/lib/udev/rc_keymaps/reddo.toml
+/usr/lib/udev/rc_keymaps/samsung_ak59_00125a.toml
 /usr/lib/udev/rc_keymaps/snapstream_firefly.toml
 /usr/lib/udev/rc_keymaps/streamzap.toml
 /usr/lib/udev/rc_keymaps/su3000.toml
-/usr/lib/udev/rc_keymaps/tango.toml
 /usr/lib/udev/rc_keymaps/tanix_tx3mini.toml
 /usr/lib/udev/rc_keymaps/tanix_tx5max.toml
 /usr/lib/udev/rc_keymaps/tbs_nec.toml
@@ -466,6 +468,7 @@ popd
 /usr/include/libdvbv5/desc_logical_channel.h
 /usr/include/libdvbv5/desc_network_name.h
 /usr/include/libdvbv5/desc_partial_reception.h
+/usr/include/libdvbv5/desc_registration_id.h
 /usr/include/libdvbv5/desc_sat.h
 /usr/include/libdvbv5/desc_service.h
 /usr/include/libdvbv5/desc_t2_delivery.h
