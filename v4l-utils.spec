@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.22.0
-Release  : 44
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2
-Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.0.tar.bz2.asc
+Version  : 1.22.1
+Release  : 45
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -179,10 +179,10 @@ services components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.22.0
-cd %{_builddir}/v4l-utils-1.22.0
+%setup -q -n v4l-utils-1.22.1
+cd %{_builddir}/v4l-utils-1.22.1
 pushd ..
-cp -a v4l-utils-1.22.0 build32
+cp -a v4l-utils-1.22.1 build32
 popd
 
 %build
@@ -190,7 +190,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634340616
+export SOURCE_DATE_EPOCH=1635958985
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -221,12 +221,12 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634340616
+export SOURCE_DATE_EPOCH=1635958985
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
-cp %{_builddir}/v4l-utils-1.22.0/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
-cp %{_builddir}/v4l-utils-1.22.0/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
-cp %{_builddir}/v4l-utils-1.22.0/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+cp %{_builddir}/v4l-utils-1.22.1/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
+cp %{_builddir}/v4l-utils-1.22.1/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
+cp %{_builddir}/v4l-utils-1.22.1/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
