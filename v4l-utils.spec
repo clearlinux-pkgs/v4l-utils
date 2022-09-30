@@ -6,7 +6,7 @@
 #
 Name     : v4l-utils
 Version  : 1.22.1
-Release  : 47
+Release  : 48
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
 Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2.asc
@@ -20,7 +20,6 @@ Requires: v4l-utils-lib = %{version}-%{release}
 Requires: v4l-utils-license = %{version}-%{release}
 Requires: v4l-utils-locales = %{version}-%{release}
 Requires: v4l-utils-man = %{version}-%{release}
-Requires: v4l-utils-services = %{version}-%{release}
 BuildRequires : buildreq-kde
 BuildRequires : buildreq-qmake
 BuildRequires : doxygen
@@ -45,7 +44,6 @@ BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
-BuildRequires : pkgconfig(libbpf)
 BuildRequires : pkgconfig(libelf)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(sdl2)
@@ -63,7 +61,6 @@ Group: Binaries
 Requires: v4l-utils-data = %{version}-%{release}
 Requires: v4l-utils-config = %{version}-%{release}
 Requires: v4l-utils-license = %{version}-%{release}
-Requires: v4l-utils-services = %{version}-%{release}
 
 %description bin
 bin components for the v4l-utils package.
@@ -170,14 +167,6 @@ Group: Default
 man components for the v4l-utils package.
 
 
-%package services
-Summary: services components for the v4l-utils package.
-Group: Systemd services
-
-%description services
-services components for the v4l-utils package.
-
-
 %prep
 %setup -q -n v4l-utils-1.22.1
 cd %{_builddir}/v4l-utils-1.22.1
@@ -190,7 +179,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1635958985
+export SOURCE_DATE_EPOCH=1664556000
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -221,12 +210,12 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1635958985
+export SOURCE_DATE_EPOCH=1664556000
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
-cp %{_builddir}/v4l-utils-1.22.1/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51
-cp %{_builddir}/v4l-utils-1.22.1/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858
-cp %{_builddir}/v4l-utils-1.22.1/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43
+cp %{_builddir}/v4l-utils-%{version}/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51 || :
+cp %{_builddir}/v4l-utils-%{version}/COPYING.libdvbv5 %{buildroot}/usr/share/package-licenses/v4l-utils/c8b571eca4828564399feba57f6e9f8f2f359858 || :
+cp %{_builddir}/v4l-utils-%{version}/COPYING.libv4l %{buildroot}/usr/share/package-licenses/v4l-utils/bc667f27fc254baf99c2b974155ba528359ecc43 || :
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -355,15 +344,6 @@ popd
 /usr/lib/udev/rc_keymaps/pixelview_new.toml
 /usr/lib/udev/rc_keymaps/powercolor_real_angel.toml
 /usr/lib/udev/rc_keymaps/proteus_2309.toml
-/usr/lib/udev/rc_keymaps/protocols/grundig.o
-/usr/lib/udev/rc_keymaps/protocols/imon_rsc.o
-/usr/lib/udev/rc_keymaps/protocols/manchester.o
-/usr/lib/udev/rc_keymaps/protocols/pulse_distance.o
-/usr/lib/udev/rc_keymaps/protocols/pulse_length.o
-/usr/lib/udev/rc_keymaps/protocols/raw.o
-/usr/lib/udev/rc_keymaps/protocols/rc_mm.o
-/usr/lib/udev/rc_keymaps/protocols/samsung36.o
-/usr/lib/udev/rc_keymaps/protocols/xbox-dvd.o
 /usr/lib/udev/rc_keymaps/purpletv.toml
 /usr/lib/udev/rc_keymaps/pv951.toml
 /usr/lib/udev/rc_keymaps/rc6_mce.toml
@@ -601,10 +581,6 @@ popd
 /usr/share/man/man1/v4l2-compliance.1
 /usr/share/man/man1/v4l2-ctl.1
 /usr/share/man/man5/rc_keymap.5
-
-%files services
-%defattr(-,root,root,-)
-/usr/lib/systemd/system/systemd-udevd.service.d/50-rc_keymap.conf
 
 %files locales -f libdvbv5.lang -f v4l-utils.lang
 %defattr(-,root,root,-)
