@@ -7,6 +7,7 @@ Configure miss: i686-generic-linux-gnu-dot
 Configure miss: i686-generic-linux-gnu-doxygen
 Configure miss: i686-generic-linux-gnu-dvips
 Configure miss: i686-generic-linux-gnu-egrep
+Configure miss: i686-generic-linux-gnu-file
 Configure miss: i686-generic-linux-gnu-latex
 Configure miss: i686-generic-linux-gnu-makeindex
 Configure miss: i686-generic-linux-gnu-makeindex
@@ -15,11 +16,12 @@ Configure miss: i686-generic-linux-gnu-perl
 Configure miss: ioctl with POSIX signature
 Configure miss: ioctl with POSIX signature
 Configure miss: jpeg_read_header in -ljpeg
-Configure miss: libbpf
-Configure miss: libbpf
+Configure miss: libbpf >= 0.7
+Configure miss: libbpf >= 0.7
 Configure miss: moc-qt5
 Configure miss: moc-qt5
 Configure miss: rcc-qt5
 Configure miss: rcc-qt5
 Configure miss: uic-qt5
 Configure miss: uic-qt5
+Configure miss: x86_64-generic-linux-gnu-file

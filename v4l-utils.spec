@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.22.1
-Release  : 49
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2
-Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.22.1.tar.bz2.asc
+Version  : 1.24.0
+Release  : 50
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2.asc
 Summary  : Media controller library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
@@ -36,6 +36,7 @@ BuildRequires : pkg-config
 BuildRequires : pkgconfig(32alsa)
 BuildRequires : pkgconfig(32gl)
 BuildRequires : pkgconfig(32glu)
+BuildRequires : pkgconfig(32json-c)
 BuildRequires : pkgconfig(32libelf)
 BuildRequires : pkgconfig(32libudev)
 BuildRequires : pkgconfig(32sdl2)
@@ -44,16 +45,19 @@ BuildRequires : pkgconfig(SDL2_image)
 BuildRequires : pkgconfig(alsa)
 BuildRequires : pkgconfig(gl)
 BuildRequires : pkgconfig(glu)
+BuildRequires : pkgconfig(json-c)
 BuildRequires : pkgconfig(libelf)
 BuildRequires : pkgconfig(libudev)
 BuildRequires : pkgconfig(sdl2)
 BuildRequires : pkgconfig(x11)
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 
 %description
-v4l-utils
----------
-Linux utilities and libraries to handle media devices (TV devices,
-capture devices, radio devices, remote controllers).
+Firmware dumps must be in ASCII format and each line corresponds to an I2C instruction sent to the chip. Each line
+must either be a special instruction like RESET_CLK, RESET_TUNER (see standards.c) or be a sequence of bytes
+represented in hexadecimal format xx separated by a space character ' '.
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -168,10 +172,10 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.22.1
-cd %{_builddir}/v4l-utils-1.22.1
+%setup -q -n v4l-utils-1.24.0
+cd %{_builddir}/v4l-utils-1.24.0
 pushd ..
-cp -a v4l-utils-1.22.1 build32
+cp -a v4l-utils-1.24.0 build32
 popd
 
 %build
@@ -179,15 +183,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664556000
+export SOURCE_DATE_EPOCH=1677191080
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -210,7 +214,7 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1664556000
+export SOURCE_DATE_EPOCH=1677191080
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp %{_builddir}/v4l-utils-%{version}/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51 || :
@@ -267,6 +271,7 @@ popd
 /usr/lib/udev/rc_keymaps/cinergy.toml
 /usr/lib/udev/rc_keymaps/cinergy_1400.toml
 /usr/lib/udev/rc_keymaps/cinergyt2.toml
+/usr/lib/udev/rc_keymaps/ct_90405.toml
 /usr/lib/udev/rc_keymaps/d680_dmb.toml
 /usr/lib/udev/rc_keymaps/delock_61959.toml
 /usr/lib/udev/rc_keymaps/dib0700_nec.toml
@@ -317,6 +322,8 @@ popd
 /usr/lib/udev/rc_keymaps/lme2510.toml
 /usr/lib/udev/rc_keymaps/manli.toml
 /usr/lib/udev/rc_keymaps/mce_keyboard.toml
+/usr/lib/udev/rc_keymaps/mecool_kii_pro.toml
+/usr/lib/udev/rc_keymaps/mecool_kiii_pro.toml
 /usr/lib/udev/rc_keymaps/medion_x10.toml
 /usr/lib/udev/rc_keymaps/medion_x10_digitainer.toml
 /usr/lib/udev/rc_keymaps/medion_x10_or2x.toml
@@ -407,6 +414,7 @@ popd
 /usr/bin/v4l2-ctl
 /usr/bin/v4l2-dbg
 /usr/bin/v4l2-sysfs-path
+/usr/bin/v4l2-tracer
 
 %files config
 %defattr(-,root,root,-)
@@ -486,6 +494,7 @@ popd
 /usr/lib64/libv4l1.so
 /usr/lib64/libv4l2.so
 /usr/lib64/libv4l2rds.so
+/usr/lib64/libv4l2tracer.so
 /usr/lib64/libv4lconvert.so
 /usr/lib64/pkgconfig/libdvbv5.pc
 /usr/lib64/pkgconfig/libv4l1.pc
@@ -580,6 +589,7 @@ popd
 /usr/share/man/man1/qvidcap.1
 /usr/share/man/man1/v4l2-compliance.1
 /usr/share/man/man1/v4l2-ctl.1
+/usr/share/man/man1/v4l2-tracer.1
 /usr/share/man/man5/rc_keymap.5
 
 %files locales -f libdvbv5.lang -f v4l-utils.lang
