@@ -5,12 +5,12 @@
 # Source0 file verified with key 0x199A64FADFB500FF (gjasny@web.de)
 #
 Name     : v4l-utils
-Version  : 1.24.0
-Release  : 50
-URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2
-Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2
-Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.0.tar.bz2.asc
-Summary  : Media controller library.
+Version  : 1.24.1
+Release  : 51
+URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.1.tar.bz2
+Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.1.tar.bz2
+Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.24.1.tar.bz2.asc
+Summary  : V4L2 subdevice library.
 Group    : Development/Tools
 License  : GPL-2.0 LGPL-2.1
 Requires: v4l-utils-bin = %{version}-%{release}
@@ -55,9 +55,10 @@ BuildRequires : pkgconfig(x11)
 %define debug_package %{nil}
 
 %description
-Firmware dumps must be in ASCII format and each line corresponds to an I2C instruction sent to the chip. Each line
-must either be a special instruction like RESET_CLK, RESET_TUNER (see standards.c) or be a sequence of bytes
-represented in hexadecimal format xx separated by a space character ' '.
+1) Why such library is needed
+==========================
+Media devices can be very complex. It is not trivial how to detect what's the
+other devices associated with a video node.
 
 %package bin
 Summary: bin components for the v4l-utils package.
@@ -172,10 +173,10 @@ man components for the v4l-utils package.
 
 
 %prep
-%setup -q -n v4l-utils-1.24.0
-cd %{_builddir}/v4l-utils-1.24.0
+%setup -q -n v4l-utils-1.24.1
+cd %{_builddir}/v4l-utils-1.24.1
 pushd ..
-cp -a v4l-utils-1.24.0 build32
+cp -a v4l-utils-1.24.1 build32
 popd
 
 %build
@@ -183,7 +184,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1677191080
+export SOURCE_DATE_EPOCH=1677264081
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -214,7 +215,7 @@ cd ../build32;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1677191080
+export SOURCE_DATE_EPOCH=1677264081
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/v4l-utils
 cp %{_builddir}/v4l-utils-%{version}/COPYING %{buildroot}/usr/share/package-licenses/v4l-utils/37d15fec7a725520bfff73f04485d0affc31dc51 || :
