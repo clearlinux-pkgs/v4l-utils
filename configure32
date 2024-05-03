@@ -1,1 +1,1 @@
---disable-qv4l2 --disable-v4l-utils
+-Dqv4l2=disabled -Dv4l-utils=disabled

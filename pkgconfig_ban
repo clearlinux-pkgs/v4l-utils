@@ -19,3 +19,7 @@ Qt5Gui
 32sdl2
 32libbpf
 libbpf
+32xmlrpc
+xmlrpc
+32sdl2_image
+sdl2_image

@@ -3,3 +3,4 @@
 doxygen
 buildreq-kde
 llvm
+SDL2_image-dev
