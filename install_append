@@ -1,2 +1,3 @@
 mkdir -p %{buildroot}/usr/lib64/gconv/gconv-modules.d
 mv %{buildroot}/usr/lib64/gconv/gconv-modules %{buildroot}/usr/lib64/gconv/gconv-modules.d/v4l-utils.conf
+mv %{buildroot}/usr/sbin/* %{buildroot}/usr/bin/
