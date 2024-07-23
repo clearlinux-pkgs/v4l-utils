@@ -1,5 +1,5 @@
 PKG_NAME := v4l-utils
-URL = https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.28.0.tar.xz
+URL = https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.28.1.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
