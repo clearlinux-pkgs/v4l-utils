@@ -9,7 +9,7 @@
 #
 Name     : v4l-utils
 Version  : 1.28.1
-Release  : 66
+Release  : 67
 URL      : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.28.1.tar.xz
 Source0  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.28.1.tar.xz
 Source1  : https://linuxtv.org/downloads/v4l-utils/v4l-utils-1.28.1.tar.xz.asc
